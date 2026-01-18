@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/liom-source/my-cli/cmd"
+	"github.com/plh97/task-cli/cmd"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/liom-source/my-cli
+module github.com/plh97/task-cli
 
 go 1.25.1
 

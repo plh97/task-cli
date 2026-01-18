@@ -110,7 +110,7 @@ Example `data.json` structure:
 ## Project Structure
 
 ```
-my-cli/
+task-cli/
 ├── cli_cobra_basic.go   # Main entry point
 ├── cmd/
 │   ├── root.go          # Root command configuration

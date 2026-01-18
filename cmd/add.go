@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"time"
 
-	"github.com/liom-source/my-cli/helper"
+	"github.com/plh97/task-cli/helper"
 	"github.com/spf13/cobra"
 )
 
