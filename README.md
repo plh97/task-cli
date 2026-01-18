@@ -24,24 +24,73 @@ Each task contains the following properties:
 | `createdAt`   | The date and time when the task was created      |
 | `updatedAt`   | The date and time when the task was last updated |
 
+## How It Works
+
+Task Tracker CLI is built with:
+
+- **[Go](https://go.dev/)** - Programming language
+- **[Cobra](https://github.com/spf13/cobra)** - CLI framework for Go
+- **JSON file storage** - Tasks are persisted in a local `data.json` file
+
+### Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   CLI Commands  │────▶│  Helper Layer   │────▶│   data.json     │
+│   (cmd/*.go)    │     │  (helper/*.go)  │     │   (storage)     │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+```
+
+1. **Commands** (`cmd/`) - Define CLI commands using Cobra (add, list, update, delete, etc.)
+2. **Helper** (`helper/`) - Handles data structures and JSON file read/write operations
+3. **Storage** - Tasks are stored in `data.json` in the current directory
+
+---
+
 ## Installation
 
 ### Prerequisites
 
-- Go 1.25+ installed on your system
+- [Go 1.25+](https://go.dev/dl/) installed on your system
 
-### Build from Source
+### Option 1: Go Install (Recommended)
+
+```bash
+go install github.com/plh97/task-cli@latest
+```
+
+### Option 2: Build from Source
 
 ```bash
 # Clone the repository
-git clone https://github.com/liom-source/my-cli.git
-cd my-cli
+git clone https://github.com/plh97/task-cli.git
+cd task-cli
 
 # Build the binary
-go build -o task-cli cli_cobra_basic.go
+go build -o task-cli .
 
-# (Optional) Move to your PATH
-mv task-cli /usr/local/bin/
+# (Optional) Move to your PATH for global access
+sudo mv task-cli /usr/local/bin/
+```
+
+### Option 3: Download Binary
+
+Download pre-built binaries from the [Releases](https://github.com/plh97/task-cli/releases) page.
+
+---
+
+## Running the CLI
+
+### Quick Start
+
+```bash
+# If installed via go install or moved to PATH
+task-cli add "My first task"
+task-cli list
+
+# If running from source directory
+go run . add "My first task"
+go run . list
 ```
 
 ## Usage
@@ -109,7 +158,7 @@ Example `data.json` structure:
 
 ## Project Structure
 
-```
+```bash
 task-cli/
 ├── cli_cobra_basic.go   # Main entry point
 ├── cmd/
@@ -121,6 +170,67 @@ task-cli/
 ├── go.mod
 └── README.md
 ```
+
+---
+
+## Development
+
+### Setup Development Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/plh97/task-cli.git
+cd task-cli
+
+# Install dependencies
+go mod download
+
+# Run in development mode
+go run . <command>
+```
+
+### Adding a New Command
+
+1. Create a new file in `cmd/` directory (e.g., `cmd/mycommand.go`)
+2. Define your command using Cobra:
+
+```go
+package cmd
+
+import "github.com/spf13/cobra"
+
+var myCmd = &cobra.Command{
+    Use:   "mycommand",
+    Short: "Description of my command",
+    Run: func(cmd *cobra.Command, args []string) {
+        // Your logic here
+    },
+}
+
+func init() {
+    rootCmd.AddCommand(myCmd)
+}
+```
+
+### Building for Production
+
+```bash
+# Build for current platform
+go build -o task-cli .
+
+# Build for multiple platforms
+GOOS=darwin GOARCH=arm64 go build -o task-cli-darwin-arm64 .
+GOOS=linux GOARCH=amd64 go build -o task-cli-linux-amd64 .
+GOOS=windows GOARCH=amd64 go build -o task-cli-windows-amd64.exe .
+```
+
+### Running Tests
+
+```bash
+go test ./...
+```
+
+---
 
 ## License
 
